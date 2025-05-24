@@ -23,7 +23,8 @@ Under the hood it uses [gettext] `.pot` and `.po` formats.
 1. **Get** your source strings in CSV.
 2. `pot` &rarr; **generate** `.pot` template.
 3. `pos` &rarr; **create** new `.po` files with blank translations.
-4. **Edit** `.po` files using Poedit, Crowdin, LLM-assisted scripts, or manually.
+4. **Edit** `.po` files using Poedit, Crowdin, LLM-assisted scripts,
+  or manually.
 5. `make` &rarr; **export** translations back into CSV.
 6. When new strings appear: `update` &rarr; **merge** into existing `.po`.
 
@@ -104,8 +105,9 @@ dayz-stringtable update -i stringtable.csv -d l18n -o updated_l18n
 ## Integrations & Tools
 
 * **Poedit** – GUI editor that can auto-translate using DeepL/Google APIs.
-* **Crowdin** – cloud localization platform.
-* **LLMs** – you can script `translate-toolkit` with LibreTranslate or OpenAI to auto-fill `msgstr`.
+* **Crowdin/Lokalise/POEditor** – cloud localization platform.
+* **LLMs** – you can script `translate-toolkit` with LibreTranslate or
+  OpenAI to auto-fill `msgstr`.
 
 <!-- Links -->
 [dayz-stringtable-darwin-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-darwin-arm64 "MacOS arm64 file"
