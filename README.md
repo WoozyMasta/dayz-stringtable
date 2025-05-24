@@ -109,6 +109,17 @@ dayz-stringtable update -i stringtable.csv -d l18n -o updated_l18n
 * **LLMs** – you can script `translate-toolkit` with LibreTranslate or
   OpenAI to auto-fill `msgstr`.
 
+<!-- omit in toc -->
+### Crypto Donations
+
+<!-- cSpell:disable -->
+* **BTC**: `1Jb6vZAMVLQ9wwkyZfx2XgL5cjPfJ8UU3c`
+* **USDT (TRC20)**: `TN99xawQTZKraRyvPAwMT4UfoS57hdH8Kz`
+* **TON**: `UQBB5D7cL5EW3rHM_44rur9RDMz_fvg222R4dFiCAzBO_ptH`
+<!-- cSpell:enable -->
+
+Your support is greatly appreciated!
+
 <!-- Links -->
 [dayz-stringtable-darwin-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-darwin-arm64 "MacOS arm64 file"
 [dayz-stringtable-darwin-amd64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-darwin-amd64 "MacOS amd64 file"
