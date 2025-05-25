@@ -63,7 +63,7 @@ func (cmd *UpdateCmd) Execute(_ []string) error {
 			}
 
 			prev := ""
-			if existing != nil {
+			if existing != nil && existing.IsTranslatedC(row[1], row[0]) {
 				prev = existing.GetC(row[1], row[0])
 			}
 			newPo.SetC(row[1], row[0], prev)
