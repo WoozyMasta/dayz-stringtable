@@ -104,6 +104,10 @@ dayz-stringtable update -i stringtable.csv -d l18n -o updated_l18n
 
 ## Integrations & Tools
 
+For integration into your project or CI, you can check out the examples
+of automation scripts
+[strings.sh](tools/strings.sh) and [strings.ps1](tools/strings.ps1)
+
 * **Poedit** – GUI editor that can auto-translate using DeepL/Google APIs.
 * **Crowdin/Lokalise/POEditor** – cloud localization platform.
 * **LLMs** – you can script `translate-toolkit` with LibreTranslate or
