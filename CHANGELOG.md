@@ -13,6 +13,22 @@ and this project adheres to [Semantic Versioning][].
 ### Removed
 -->
 
+## [0.1.1][] - 2025-05-25
+
+### Added
+
+* Usage examples
+* `.markdownlint.json` configuration
+
+## Changed
+
+* Fixed behavior of update command, new and untranslated translation
+  strings are now empty in the resulting po files as expected
+* Disabled UPX compression for windows builds due to large number of
+  false positives on VirusTotal
+
+[0.1.1]: https://github.com/WoozyMasta/dayz-stringtable/compare/v0.1.0...v0.1.1
+
 ## [0.1.0][] - 2025-05-24
 
 ### Added
