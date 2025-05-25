@@ -22,7 +22,7 @@ build() {
     cyclonedx-gomod bin -json -output "./build/$bin.sbom.json" "./build/$bin"
   fi
 
-  if [ "$GOOS" != "darwin" ] && command -v upx &>/dev/null; then
+  if [ "$GOOS" == "linux" ] && command -v upx &>/dev/null; then
     upx --lzma --best "./build/$bin" > /dev/null
     upx -t "./build/$bin" > /dev/null
     printf '\tUPX packed\t'
