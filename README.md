@@ -35,17 +35,12 @@ branches/PRs, avoiding noise in other locales.
 
 Download the latest binary from releases or build from source:
 
-|         **Download links**         |
-| :--------------------------------: |
-| [dayz-stringtable-darwin-arm64][]  |
-| [dayz-stringtable-darwin-amd64][]  |
-|  [dayz-stringtable-linux-i386][]   |
-|  [dayz-stringtable-linux-amd64][]  |
-|   [dayz-stringtable-linux-arm][]   |
-|  [dayz-stringtable-linux-arm64][]  |
-| [dayz-stringtable-windows-i386][]  |
-| [dayz-stringtable-windows-amd64][] |
-| [dayz-stringtable-windows-arm64][] |
+|       |    **Linux**    |    **Windows**    |    **macOS**     |
+|------:|:---------------:|:-----------------:|:----------------:|
+| i386  | [linux-i386][]  | [windows-i386][]  |                  |
+| amd64 | [linux-amd64][] | [windows-amd64][] | [darwin-amd64][] |
+| arm   | [linux-arm][]   |                   |                  |
+| arm64 | [linux-arm64][] | [windows-arm64][] | [darwin-arm64][] |
 
 ```bash
 git clone https://github.com/woozymasta/dayz-stringtable.git
@@ -125,13 +120,13 @@ of automation scripts
 Your support is greatly appreciated!
 
 <!-- Links -->
-[dayz-stringtable-darwin-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-darwin-arm64 "MacOS arm64 file"
-[dayz-stringtable-darwin-amd64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-darwin-amd64 "MacOS amd64 file"
-[dayz-stringtable-linux-i386]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-linux-386 "Linux i386 file"
-[dayz-stringtable-linux-amd64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-linux-amd64 "Linux amd64 file"
-[dayz-stringtable-linux-arm]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-linux-arm "Linux arm file"
-[dayz-stringtable-linux-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-linux-arm64 "Linux arm64 file"
-[dayz-stringtable-windows-i386]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-windows-386.exe "Windows i386 file"
-[dayz-stringtable-windows-amd64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-windows-amd64.exe "Windows amd64 file"
-[dayz-stringtable-windows-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/dayz-stringtable-windows-arm64.exe "Windows arm64 file"
+[darwin-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/darwin-arm64 "MacOS arm64 file"
+[darwin-amd64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/darwin-amd64 "MacOS amd64 file"
+[linux-i386]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/linux-386 "Linux i386 file"
+[linux-amd64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/linux-amd64 "Linux amd64 file"
+[linux-arm]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/linux-arm "Linux arm file"
+[linux-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/linux-arm64 "Linux arm64 file"
+[windows-i386]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/windows-386.exe "Windows i386 file"
+[windows-amd64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/windows-amd64.exe "Windows amd64 file"
+[windows-arm64]: https://github.com/WoozyMasta/dayz-stringtable/releases/latest/download/windows-arm64.exe "Windows arm64 file"
 [gettext]: https://www.gnu.org/software/gettext/
