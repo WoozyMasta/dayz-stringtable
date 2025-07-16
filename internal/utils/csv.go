@@ -3,6 +3,7 @@ package utils
 
 import (
 	"encoding/csv"
+	"fmt"
 	"os"
 )
 
@@ -14,5 +15,23 @@ func LoadCSV(path string) ([][]string, error) {
 	}
 	defer func() { _ = f.Close() }()
 
-	return csv.NewReader(f).ReadAll()
+	rows, err := csv.NewReader(f).ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	// check for duplicate keys (first column)
+	seen := make(map[string]int)
+	for i, row := range rows[1:] {
+		if len(row) < 1 {
+			continue
+		}
+		key := row[0]
+		if prevLine, ok := seen[key]; ok {
+			return nil, fmt.Errorf("duplicate key '%s' at row %d (already seen at row %d)", key, i+2, prevLine+2)
+		}
+		seen[key] = i + 1
+	}
+
+	return rows, nil
 }

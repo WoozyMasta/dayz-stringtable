@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning][].
 ### Removed
 -->
 
+## [0.1.2][] - 2025-07-16
+
+### Added
+
+* Automatic check for duplicate keys in the first column of CSV (msgctxt).
+  Now `LoadCSV()` will return an error if any duplicates are found.
+
+[0.1.2]: https://github.com/WoozyMasta/dayz-stringtable/compare/v0.1.1...v0.1.2
+
 ## [0.1.1][] - 2025-05-25
 
 ### Added
