@@ -5,13 +5,16 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/leonelquinteros/gotext"
+	"github.com/woozymasta/dayz-stringtable/internal/poutil"
 )
 
 // TestPosCmd verifies that PosCmd generates .po files for each language.
 func TestPosCmd(t *testing.T) {
 	tmpDir := t.TempDir()
-	csvContent := "msgid,domain,english,spanish\nhello,greet,Hello,Hola\n"
+	// CSV format: "Language","original",...
+	csvContent := `"Language","original","english","spanish"
+"hello","greet","Hello","Hola"
+`
 	csvPath := filepath.Join(tmpDir, "in.csv")
 	if err := os.WriteFile(csvPath, []byte(csvContent), 0o644); err != nil {
 		t.Fatalf("failed to write CSV: %v", err)
@@ -24,13 +27,16 @@ func TestPosCmd(t *testing.T) {
 	}
 
 	for _, lang := range []string{"english", "spanish"} {
-		p := gotext.NewPo()
-		p.ParseFile(filepath.Join(poDir, lang+".po"))
+		p, err := poutil.ParseFile(filepath.Join(poDir, lang+".po"))
+		if err != nil {
+			t.Fatalf("failed to parse PO file: %v", err)
+		}
 		want := "Hello"
 		if lang == "spanish" {
 			want = "Hola"
 		}
-		if got := p.GetC("greet", "hello"); got != want {
+		// PO format: msgctxt = key (row[0] = "hello"), msgid = original (row[1] = "greet")
+		if got := p.GetC("hello", "greet"); got != want {
 			t.Errorf("%s translation = %q, want %q", lang, got, want)
 		}
 	}

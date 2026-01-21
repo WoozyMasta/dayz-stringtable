@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/leonelquinteros/gotext"
+	"github.com/woozymasta/dayz-stringtable/internal/poutil"
 )
 
 // TestMakeCmd verifies that MakeCmd correctly merges .po translations into a CSV.
@@ -14,7 +14,11 @@ func TestMakeCmd(t *testing.T) {
 	tmpDir := t.TempDir()
 
 	// Create sample input CSV
-	csvContent := "msgid,domain\nhello,greeting\nbye,farewell\n"
+	// CSV format: "Language","original",...
+	csvContent := `"Language","original"
+"hello","greeting"
+"bye","farewell"
+`
 	csvPath := filepath.Join(tmpDir, "input.csv")
 	if err := os.WriteFile(csvPath, []byte(csvContent), 0o644); err != nil {
 		t.Fatalf("failed to write CSV: %v", err)
@@ -27,10 +31,12 @@ func TestMakeCmd(t *testing.T) {
 	}
 
 	// Build an English .po with translations
-	po := gotext.NewPo()
+	// PO format: msgctxt = key (row[0]), msgid = original (row[1])
+	po := poutil.NewFile()
 	po.Language = "english"
-	po.SetC("greeting", "hello", "Hello!")
-	po.SetC("farewell", "bye", "Goodbye!")
+	po.SetHeader("Language", "english")
+	po.SetC("hello", "greeting", "Hello!")
+	po.SetC("bye", "farewell", "Goodbye!")
 	poData, err := po.MarshalText()
 	if err != nil {
 		t.Fatalf("failed to marshal po: %v", err)

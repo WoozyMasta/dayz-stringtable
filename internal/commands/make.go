@@ -1,14 +1,15 @@
 package commands
 
 import (
-	"path/filepath"
+	"fmt"
 	"strings"
 
-	"github.com/leonelquinteros/gotext"
-	"github.com/woozymasta/dayz-stringtable/internal/utils"
+	"github.com/woozymasta/dayz-stringtable/internal/csvutil"
+	"github.com/woozymasta/dayz-stringtable/internal/poutil"
 )
 
-// MakeCmd read CSV + .po files and write merged CSV
+// MakeCmd merges PO files back into a CSV file with translations.
+//
 // Usage: dayz-stringtable make --input stringtable.csv --podir po/ --output full.csv [--force]
 type MakeCmd struct {
 	Input  string `short:"i" long:"input" description:"CSV input file" default:"stringtable.csv"`
@@ -17,52 +18,54 @@ type MakeCmd struct {
 	Force  bool   `short:"f" long:"force" description:"Overwrite existing files"`
 }
 
-// Execute loads CSV and .po files then writes merged CSV.
+// Execute loads CSV and PO files, then writes a merged CSV with all translations.
 func (cmd *MakeCmd) Execute(_ []string) error {
-	rows, err := utils.LoadCSV(cmd.Input)
-	utils.CheckErr(err)
-
-	// find .po files
-	files, err := filepath.Glob(filepath.Join(cmd.PoDir, "*.po"))
-	utils.CheckErr(err)
-
-	poMap := map[string]*gotext.Po{}
-	for _, f := range files {
-		lang := strings.TrimSuffix(filepath.Base(f), ".po")
-		p := gotext.NewPo()
-		p.ParseFile(f)
-		poMap[lang] = p
+	rows, err := csvutil.LoadCSV(cmd.Input)
+	if err != nil {
+		return fmt.Errorf("failed to load CSV: %w", err)
 	}
 
-	// determine langs in default order
+	poMap, err := poutil.LoadPODirectory(cmd.PoDir)
+	if err != nil {
+		return fmt.Errorf("failed to load PO files: %w", err)
+	}
+
+	// Determine languages in default order
 	var langs []string
-	for _, l := range defaultLangs {
+	for _, l := range DefaultLanguages {
 		if _, ok := poMap[l]; ok {
 			langs = append(langs, l)
 		}
 	}
 
 	var b strings.Builder
-	// header
 	header := append([]string{"Language", "original"}, langs...)
-	writeQuoted := func(fields []string) {
-		for _, f := range fields {
-			esc := strings.ReplaceAll(f, `"`, `""`)
-			b.WriteString(`"` + esc + `",`)
-		}
-		b.WriteByte('\n')
-	}
-	writeQuoted(header)
+	writeQuotedCSVRow(&b, header)
 
-	// rows
+	// Write data rows: CSV format row[0] = key, row[1] = original text
+	// PO format: msgctxt = key, msgid = original text
 	for _, row := range rows[1:] {
+		if len(row) < 2 {
+			continue
+		}
 		rec := []string{row[0], row[1]}
 		for _, l := range langs {
-			rec = append(rec, poMap[l].GetC(row[1], row[0]))
+			rec = append(rec, poMap[l].GetC(row[0], row[1]))
 		}
-		writeQuoted(rec)
+		writeQuotedCSVRow(&b, rec)
 	}
 
-	utils.WriteFile(cmd.Output, []byte(b.String()), cmd.Force)
+	if err := csvutil.WriteFile(cmd.Output, []byte(b.String()), cmd.Force); err != nil {
+		return fmt.Errorf("failed to write output: %w", err)
+	}
 	return nil
+}
+
+// writeQuotedCSVRow writes a CSV row with proper quoting and escaping.
+func writeQuotedCSVRow(b *strings.Builder, fields []string) {
+	for _, f := range fields {
+		esc := strings.ReplaceAll(f, `"`, `""`)
+		b.WriteString(`"` + esc + `",`)
+	}
+	b.WriteByte('\n')
 }

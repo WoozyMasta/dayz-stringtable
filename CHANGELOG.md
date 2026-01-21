@@ -13,6 +13,39 @@ and this project adheres to [Semantic Versioning][].
 ### Removed
 -->
 
+## [0.2.0][] - 2026-01-21
+
+### Added
+
+* `stats` command for translation statistics with completion percentages,
+  verbose mode, and JSON output format
+* `clean` command to remove duplicate `msgstr` entries and unused keys
+  from PO files
+* Full PO file header support with automatic updates and content-based
+  change detection
+* Complete comment support (translator, extracted, reference, flag) with
+  preservation on updates
+* `# notranslate` flag handling for intentionally untranslated entries
+* `LoadPODirectory()` utility function for batch loading PO files
+* Makefile for build automation
+* Refactored packages: `internal/csvutil` and `internal/poutil`
+
+### Changed
+
+* **Fixed PO file sorting**: Entries now follow CSV order
+  (was an error causing noisy commits)
+* `update` command now preserves all comments from existing entries
+* Improved error handling: functions now return errors instead of exiting
+* Project structure refactored to modular packages
+* Build system migrated to Makefile
+
+### Note
+
+Commits after v0.1.2 may appear noisy due to the sorting fix.
+This correction ensures CSV and PO file ordering consistency.
+
+[0.2.0]: https://github.com/WoozyMasta/dayz-stringtable/compare/v0.1.2...v0.2.0
+
 ## [0.1.2][] - 2025-07-16
 
 ### Added

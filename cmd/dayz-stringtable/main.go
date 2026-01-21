@@ -11,16 +11,17 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
-// Options provide base cli flags
+// Options provides base CLI flags for the application.
 type Options struct {
-	Version bool `short:"v" long:"version"` // Show version and build info
+	Version bool `short:"v" long:"version" description:"Show version and build info"`
 }
 
-// main sets up the parser and dispatches commands.
+// main sets up the command parser and dispatches to the appropriate command handler.
 func main() {
 	for _, arg := range os.Args[1:] {
 		if arg == "-v" || arg == "--version" {
-			printVersion()
+			vars.Print()
+			os.Exit(0)
 		}
 	}
 
@@ -29,7 +30,7 @@ func main() {
 	parser.Name = "dayz-stringtable"
 	parser.ShortDescription = "DayZ CSV localization helper"
 
-	// register subcommands
+	// Register all subcommands
 	for _, c := range []struct {
 		cmd                  any
 		name, desc, longDesc string
@@ -58,6 +59,18 @@ func main() {
 			"Update existing PO with new records",
 			"Read .csv and rewrite .po files in-place or to out-dir",
 		},
+		{
+			&commands.StatsCmd{},
+			"stats",
+			"Show translation statistics",
+			"Display translation completion stats for PO files",
+		},
+		{
+			&commands.CleanCmd{},
+			"clean",
+			"Clean msgstr equal to msgid in PO files",
+			"Clear msgstr when it duplicates msgid across PO files",
+		},
 	} {
 		mustAdd(parser, c.name, c.desc, c.longDesc, c.cmd)
 	}
@@ -65,7 +78,8 @@ func main() {
 	_, err := parser.Parse()
 	if err != nil {
 		if opts.Version {
-			printVersion()
+			vars.Print()
+			os.Exit(0)
 		}
 
 		if ferr, ok := err.(*flags.Error); ok && ferr.Type == flags.ErrHelp {
@@ -82,11 +96,4 @@ func mustAdd(parser *flags.Parser, name, desc, longDesc string, cmd any) {
 		fmt.Fprintf(os.Stderr, "Error adding %s command: %v", name, err)
 		os.Exit(1)
 	}
-}
-
-func printVersion() {
-	fmt.Printf(
-		"file:     %s\nversion:  %s\ncommit:   %s\nbuilt:    %s\nproject:  %s\n",
-		os.Args[0], vars.Version, vars.Commit, vars.BuildTime, vars.URL)
-	os.Exit(0)
 }

@@ -22,13 +22,10 @@ runs:
       with:
         go-version: ${{ inputs.go-version }}
 
-    - name: golangci-lint
-      uses: golangci/golangci-lint-action@v7
-      with:
-        version: v2.0
+    - name: Install dependencies
+      shell: bash
+      run: make tools
 
-    # for windows can use betteralign ./...
-    - name: Check Golang structures
-      uses: essentialkaos/aligo-action@v2
-      with:
-        files: ./...
+    - name: Check
+      shell: bash
+      run: make check

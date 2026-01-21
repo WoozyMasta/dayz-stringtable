@@ -9,13 +9,15 @@ command dayz-stringtable -v &>/dev/null || {
 
 : "${PO_DIR:=./l18n}"
 : "${CSV_TEMPLATE:=${1:-./l18n/stringtable.csv}}"
-: "${CSV_RESULT:=${2:-./client/stringtable.csv}}"
+: "${CSV_RESULT:=${2:-./client/languagecore/stringtable.csv}}"
 : "${POT_FILE:=./l18n/stringtable.pot}"
+: "${PROJECT_VERSION:=}"
 
 # uncomment language for add
 langs=(
-  # czech
-  # german
+  # english
+  czech
+  german
   russian
   # polish
   # hungarian
@@ -38,12 +40,14 @@ fi
 if [ -d "$PO_DIR" ] && [ -f "$POT_FILE" ]; then
   # update with new strings
   dayz-stringtable update -i "$CSV_TEMPLATE" -d "$PO_DIR" \
-    -l "$( IFS=,; echo "${langs[*]}" )"
+    -l "$( IFS=,; echo "${langs[*]}" )" -P "$PROJECT_VERSION"
 else
   # first run, create po files
   dayz-stringtable pos -i "$CSV_TEMPLATE" -d "$PO_DIR" -f \
-    -l "$( IFS=,; echo "${langs[*]}" )"
+    -l "$( IFS=,; echo "${langs[*]}" )" -P "$PROJECT_VERSION"
 fi
 
-dayz-stringtable pot -i "$CSV_TEMPLATE" -o "$POT_FILE" -f
+dayz-stringtable pot -i "$CSV_TEMPLATE" -o "$POT_FILE" -f -P "$PROJECT_VERSION"
 dayz-stringtable make -i "$CSV_TEMPLATE" -d "$PO_DIR" -o "$CSV_RESULT" -f
+dayz-stringtable clean -d "$PO_DIR"
+dayz-stringtable stats -i "$CSV_TEMPLATE" -d "$PO_DIR"
