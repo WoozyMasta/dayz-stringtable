@@ -71,3 +71,83 @@ func TestMakeCmd(t *testing.T) {
 		t.Errorf("unexpected output:\n%s\nexpected:\n%s", string(outData), expected)
 	}
 }
+
+// TestMakeCmdFallback verifies that MakeCmd uses original text as fallback
+// when translation is empty, has notranslate flag, or entry is missing.
+func TestMakeCmdFallback(t *testing.T) {
+	// Setup temporary workspace
+	tmpDir := t.TempDir()
+
+	// Create sample input CSV
+	csvContent := `"Language","original"
+"BBSTR_Map_Sakhal","Sakhal"
+"BBSTR_Map_Utes","Utes"
+"BBSTR_Map_Namalsk","Namalsk"
+`
+	csvPath := filepath.Join(tmpDir, "input.csv")
+	if err := os.WriteFile(csvPath, []byte(csvContent), 0o644); err != nil {
+		t.Fatalf("failed to write CSV: %v", err)
+	}
+
+	// Prepare .po directory and files
+	poDir := filepath.Join(tmpDir, "po")
+	if err := os.Mkdir(poDir, 0o755); err != nil {
+		t.Fatalf("failed to create po dir: %v", err)
+	}
+
+	// Build a PO file with:
+	// - Empty translation (should fallback to original)
+	// - Entry with notranslate flag (should fallback to original)
+	// - Missing entry (should fallback to original)
+	po := poutil.NewFile()
+	po.Language = "russian"
+	po.SetHeader("Language", "russian")
+
+	// Entry with empty translation
+	po.SetC("BBSTR_Map_Sakhal", "Sakhal", "")
+
+	// Entry with notranslate flag
+	entry := po.GetEntry("BBSTR_Map_Utes", "Utes")
+	if entry == nil {
+		po.SetC("BBSTR_Map_Utes", "Utes", "")
+		entry = po.GetEntry("BBSTR_Map_Utes", "Utes")
+	}
+	entry.Comments = []string{"#, notranslate"}
+
+	// BBSTR_Map_Namalsk is missing - should fallback to original
+
+	poData, err := po.MarshalText()
+	if err != nil {
+		t.Fatalf("failed to marshal po: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(poDir, "russian.po"), poData, 0o644); err != nil {
+		t.Fatalf("failed to write russian.po: %v", err)
+	}
+
+	// Execute MakeCmd
+	outputPath := filepath.Join(tmpDir, "full.csv")
+	cmd := MakeCmd{
+		Input:  csvPath,
+		PoDir:  poDir,
+		Output: outputPath,
+		Force:  false,
+	}
+	if err := cmd.Execute(nil); err != nil {
+		t.Fatalf("MakeCmd.Execute failed: %v", err)
+	}
+
+	// Read and verify output - all should fallback to original
+	outData, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("failed to read output: %v", err)
+	}
+	expected :=
+		`"Language","original","russian",
+"BBSTR_Map_Sakhal","Sakhal","Sakhal",
+"BBSTR_Map_Utes","Utes","Utes",
+"BBSTR_Map_Namalsk","Namalsk","Namalsk",
+`
+	if string(outData) != expected {
+		t.Errorf("unexpected output:\n%s\nexpected:\n%s", string(outData), expected)
+	}
+}

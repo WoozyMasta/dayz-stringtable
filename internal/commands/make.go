@@ -49,8 +49,28 @@ func (cmd *MakeCmd) Execute(_ []string) error {
 			continue
 		}
 		rec := []string{row[0], row[1]}
+		key := row[0]
+		original := row[1]
 		for _, l := range langs {
-			rec = append(rec, poMap[l].GetC(row[0], row[1]))
+			poFile := poMap[l]
+			entry := poFile.GetEntry(key, original)
+			var translation string
+			if entry != nil {
+				// Check if entry has notranslate flag
+				if entry.HasNoTranslate() {
+					translation = original // Use original as fallback
+				} else {
+					translation = entry.MsgStr
+					// If translation is empty, use original as fallback
+					if translation == "" {
+						translation = original
+					}
+				}
+			} else {
+				// Entry not found, use original as fallback
+				translation = original
+			}
+			rec = append(rec, translation)
 		}
 		writeQuotedCSVRow(&b, rec)
 	}
