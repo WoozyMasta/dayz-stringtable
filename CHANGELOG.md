@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning][].
 ### Removed
 -->
 
+## [0.3.1][] - 2026-01-28
+
+### Added
+
+* Auto-load `.env` file (without overriding existing environment variables)
+
+[0.3.1]: https://github.com/WoozyMasta/dayz-stringtable/compare/v0.3.0...v0.3.1
+
 ## [0.3.0][] - 2026-01-28
 
 ### Added

@@ -9,6 +9,7 @@ import (
 	"github.com/woozymasta/dayz-stringtable/internal/vars"
 
 	"github.com/jessevdk/go-flags"
+	"github.com/joho/godotenv"
 )
 
 // Options provides base CLI flags for the application.
@@ -18,6 +19,8 @@ type Options struct {
 
 // main sets up the command parser and dispatches to the appropriate command handler.
 func main() {
+	_ = godotenv.Load()
+
 	for _, arg := range os.Args[1:] {
 		if arg == "-v" || arg == "--version" {
 			vars.Print()
