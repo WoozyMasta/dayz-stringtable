@@ -163,6 +163,25 @@ Use `--clear-only` to skip adding the comment.
 Use `--remove-unused` with `-i`
 to remove entries that are no longer present in the CSV file.
 
+#### `translate`
+
+Machine-translate untranslated entries in PO files:
+
+```bash
+# DeepL (paid or free API)
+dayz-stringtable translate -d l18n deepl --auth-key $DEEPL_AUTH_KEY
+dayz-stringtable translate -d l18n deepl --auth-key $DEEPL_AUTH_KEY --api-free
+
+# OpenAI-compatible
+dayz-stringtable translate -d l18n openai --api-key $OPENAI_API_KEY
+
+# Google Translate
+dayz-stringtable translate -d l18n google --api-key $GOOGLE_TRANSLATE_API_KEY
+```
+
+Use `--lang` to target specific languages, `--exclude-lang` to skip originals,
+and `--dry-run` to preview counts without calling the provider.
+
 ## Integrations & Tools
 
 For integration into your project or CI, you can check out the examples

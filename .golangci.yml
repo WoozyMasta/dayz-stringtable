@@ -26,6 +26,9 @@ linters:
       - linters: [staticcheck]
         text: "duplicate struct tag"
         path: internal/commands/stats.go
+      - linters: [staticcheck]
+        text: "duplicate struct tag"
+        path: internal/commands/translate.go
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0

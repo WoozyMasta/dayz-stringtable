@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning][].
 ### Removed
 -->
 
+## [0.3.0][] - 2026-01-28
+
+### Added
+
+* `translate` command for machine translation of PO files
+  (DeepL, OpenAI-compatible, and Google Translate backends)
+
+[0.3.0]: https://github.com/WoozyMasta/dayz-stringtable/compare/v0.2.1...v0.3.0
+
 ## [0.2.1][] - 2026-01-21
 
 ### Changed

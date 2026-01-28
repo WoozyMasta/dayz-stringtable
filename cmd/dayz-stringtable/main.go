@@ -71,6 +71,12 @@ func main() {
 			"Clean msgstr equal to msgid in PO files",
 			"Clear msgstr when it duplicates msgid across PO files",
 		},
+		{
+			commands.NewTranslateCmd(),
+			"translate",
+			"Translate PO files using machine translation providers",
+			"Translate msgid into msgstr for PO files using provider subcommands",
+		},
 	} {
 		mustAdd(parser, c.name, c.desc, c.longDesc, c.cmd)
 	}
